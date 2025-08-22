@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Updated the title to match your research project title -->
+    <title>Spatiotemporal Analysis of PM2.5 Concentrations in Relation to Traffic Density</title>
+    <!-- Tailwind CSS is loaded from a CDN for easy styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Apply the Inter font to the entire body for a clean, professional look */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.5s ease;
+        }
+
+        /* Custom styling for the color-coded PM2.5 levels based on DENR-EMB standards */
+        .level-good { background-color: #00E400; } /* Green */
+        .level-fair { background-color: #FFFF00; } /* Yellow */
+        .level-unhealthy-sensitive { background-color: #FF7E00; } /* Orange */
+        .level-very-unhealthy { background-color: #FF0000; } /* Red */
+        .level-acutely-unhealthy { background-color: #8F3F97; } /* Purple */
+        .level-emergency { background-color: #7E0023; } /* Maroon */
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Header section -->
+    <header class="bg-white shadow-md py-4 sm:py-6 px-4">
+        <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center">
+            <!-- Updated the title in the header to match the new, more specific title -->
+            <h1 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2 sm:mb-0">
+                Spatiotemporal Analysis of PM2.5
+            </h1>
+            <nav class="flex space-x-4">
+                <a href="#about" class="text-blue-600 hover:text-blue-800 font-medium transition-colors">About the Project</a>
+                <a href="#health-info" class="text-blue-600 hover:text-blue-800 font-medium transition-colors">Health Information</a>
+                <a href="#feedback" class="text-blue-600 hover:text-blue-800 font-medium transition-colors">Feedback</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main content container -->
+    <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+
+        <!-- New About Section -->
+        <section id="about" class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 mb-8">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-4">
+                About the Project
+            </h2>
+            <p class="text-gray-700 leading-relaxed mb-6">
+                This project, conducted by Grade 10 researchers from Rizal Experimental Station and Pilot School of Cottage Industries, aims to investigate the relationship between air pollution and traffic in Maybunga, Pasig City. We are specifically focusing on PM2.5, a tiny particulate matter that poses significant health risks.
+            </p>
+
+            <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
+                Our Purpose
+            </h3>
+            <p class="text-gray-700 leading-relaxed mb-6">
+                Inspired by the United Nations Sustainable Development Goal (SDG) 11, which promotes sustainable cities, our research explores urban air pollution in relation to urban mobility and health. By using both publicly available data and our own low-cost sensor network, we hope to identify pollution hotspots and patterns that are not visible through static monitoring.
+            </p>
+
+            <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
+                Our Approach
+            </h3>
+            <p class="text-gray-700 leading-relaxed mb-6">
+                Our team is collecting data from three different locations in Maybunga: Puregold C. Raymundo, LAN Gas Station, and RAVE Park Entrance. We are using low-cost PM2.5 sensors and manually counting vehicle traffic at specific times to determine if there is a direct link between traffic density and air quality. This website is a key part of our project, designed to visualize our findings in real-time.
+            </p>
+
+            <h3 class="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
+                Our Goal
+            </h3>
+            <p class="text-gray-700 leading-relaxed">
+                We expect our statistical analysis to show a significant relationship between traffic volume and PM2.5 concentration. Our ultimate goal is to present our findings to the Pasig City government to support evidence-based decision-making for traffic regulation and air quality management. We also hope this project will raise public awareness and encourage greater community engagement in environmental monitoring.
+            </p>
+        </section>
+
+        <!-- Dashboard Section: Simulating a map and data points -->
+        <section id="dashboard" class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 mb-8">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-6">
+                Live PM2.5 Dashboard
+            </h2>
+
+            <!-- Placeholder for the map. This is where a real map would go. -->
+            <div class="relative bg-gray-200 rounded-xl overflow-hidden mb-6 h-64 sm:h-96">
+                <div class="absolute inset-0 flex items-center justify-center text-gray-500 text-sm sm:text-lg text-center p-4">
+                    Map Placeholder - Integrate your Google Maps API here.<br>Markers will show real-time sensor data.
+                </div>
+            </div>
+
+            <!-- Loading indicator for data fetch -->
+            <div id="loading-indicator" class="flex justify-center items-center py-8 hidden">
+                <div class="animate-spin rounded-full h-12 w-12 border-4 border-t-4 border-blue-500 border-opacity-25 border-t-blue-500"></div>
+                <p class="ml-4 text-lg text-gray-600">Fetching live data...</p>
+            </div>
+
+            <!-- Data cards for each sensor location -->
+            <div id="sensor-data-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Data cards will be dynamically added here by JavaScript -->
+            </div>
+            
+        </section>
+
+        <!-- Air Quality Index (AQI) Guide - Updated with DENR-EMB values -->
+        <section id="aqi-guide" class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 mb-8">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-6">
+                Air Quality Index Guide (Based on DENR-EMB DAO 2020-14)
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- DENR-EMB official levels and colors -->
+                <div class="bg-[#e4fff5] p-4 rounded-xl">
+                    <h3 class="font-bold text-[#00E400]">Good (0 - 25 µg/m³)</h3>
+                    <p class="text-sm text-gray-700 mt-2">No cautionary statement.</p>
+                </div>
+                <div class="bg-[#ffffe4] p-4 rounded-xl">
+                    <h3 class="font-bold text-[#FFFF00]">Fair (25.1 - 35.0 µg/m³)</h3>
+                    <p class="text-sm text-gray-700 mt-2">No cautionary statement.</p>
+                </div>
+                <div class="bg-[#fff0e4] p-4 rounded-xl">
+                    <h3 class="font-bold text-[#FF7E00]">Unhealthy for Sensitive Groups (35.1 - 45.0 µg/m³)</h3>
+                    <p class="text-sm text-gray-700 mt-2">People with respiratory diseases should limit outdoor exertion.</p>
+                </div>
+                <div class="bg-[#ffe4e4] p-4 rounded-xl">
+                    <h3 class="font-bold text-[#FF0000]">Very Unhealthy (45.1 - 55.0 µg/m³)</h3>
+                    <p class="text-sm text-gray-700 mt-2">Everyone may begin to experience health effects. Limit outdoor activity.</p>
+                </div>
+                <div class="bg-[#eee4ff] p-4 rounded-xl">
+                    <h3 class="font-bold text-[#8F3F97]">Acutely Unhealthy (55.1 - 90.0 µg/m³)</h3>
+                    <p class="text-sm text-gray-700 mt-2">People should limit outdoor exertion. People with heart or respiratory disease should stay indoors.</p>
+                </div>
+                 <div class="bg-[#ffe4f1] p-4 rounded-xl">
+                    <h3 class="font-bold text-[#7E0023]">Emergency (Above 91.0 µg/m³)</h3>
+                    <p class="text-sm text-gray-700 mt-2">Everyone should remain indoors. Motor vehicle use and industrial activities may be restricted.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Health Information Section -->
+        <section id="health-info" class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 mb-8">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-6">
+                Health Information
+            </h2>
+            <p class="text-gray-700 leading-relaxed">
+                Exposure to high levels of PM2.5 can have serious health implications. It can lead to respiratory issues, such as asthma and bronchitis, as well as cardiovascular problems. To protect yourself, it's recommended to limit outdoor activities when PM2.5 levels are high, especially for sensitive groups like children, the elderly, and people with pre-existing respiratory or heart conditions.
+            </p>
+        </section>
+
+        <!-- New Feedback Section -->
+        <section id="feedback" class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 mb-8">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-6">
+                Share Your Feedback
+            </h2>
+            <p class="text-gray-700 mb-4">
+                We'd love to hear your thoughts on this website. Your feedback is crucial for improving our project and making the data more useful for the community.
+            </p>
+            <!-- Embedded Google Form for feedback -->
+            <!-- The 'src' URL below is the actual link to your embedded Google Form. -->
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSek0WrL3_YCM4LyXyUjee48ps1vs9TPtE17pgfjgLFOJRkoDg/viewform?embedded=true" width="640" height="1266" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+        </section>
+
+        <!-- IQAir Section -->
+        <section class="flex flex-col items-center p-6 sm:p-8 bg-gray-200 rounded-2xl shadow-inner text-center">
+            <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">
+                Compare with Regional Data from IQAir
+            </h2>
+            <p class="text-gray-600 mb-6">
+                To provide a broader context, compare our hyper-local sensor data with the regional air quality map for Pasig City from IQAir.
+            </p>
+            <a href="https://www.iqair.com/philippines/ncr/pasig-city" target="_blank" class="inline-block px-8 py-3 bg-blue-600 text-white font-bold rounded-full transition-transform transform hover:scale-105 shadow-lg">
+                View IQAir Map
+            </a>
+        </section>
+
+    </main>
+
+    <!-- Footer section -->
+    <footer class="bg-gray-800 text-gray-400 py-4 sm:py-6 px-4 mt-8 text-center">
+        <!-- Updated footer with the full project title and researcher names -->
+        <p class="text-sm">
+            Title: Spatiotemporal Analysis of PM2.5 Concentrations in Relation to Traffic Density Using a Low-Cost Sensor Network in Maybunga, Pasig City <br>
+            Researchers: Emmanuel Armas, Joshua Jalotjot, Nazaren Oliquino (Grade 10 Researchers)
+        </p>
+    </footer>
+
+    <!-- JavaScript for dynamic content and real-time simulation -->
+    <script>
+        // Get references to the HTML elements
+        const dataGrid = document.getElementById('sensor-data-grid');
+        const loadingIndicator = document.getElementById('loading-indicator');
+
+        // Function to determine the card's background color based on the DENR-EMB PM2.5 value.
+        function getStatusColorClass(value) {
+            if (value <= 25) return 'bg-[#e4fff5] border-l-4 border-[#00E400]';
+            if (value <= 35) return 'bg-[#ffffe4] border-l-4 border-[#FFFF00]';
+            if (value <= 45) return 'bg-[#fff0e4] border-l-4 border-[#FF7E00]';
+            if (value <= 55) return 'bg-[#ffe4e4] border-l-4 border-[#FF0000]';
+            if (value <= 90) return 'bg-[#eee4ff] border-l-4 border-[#8F3F97]';
+            return 'bg-[#ffe4f1] border-l-4 border-[#7E0023]';
+        }
+
+        // Function to determine the status text based on the DENR-EMB PM2.5 value.
+        function getStatusText(value) {
+            if (value <= 25) return 'Good';
+            if (value <= 35) return 'Fair';
+            if (value <= 45) return 'Unhealthy for Sensitive Groups';
+            if (value <= 55) return 'Very Unhealthy';
+            if (value <= 90) return 'Acutely Unhealthy';
+            return 'Emergency';
+        }
+
+        // Function to render a single data card.
+        function renderCard(data) {
+            const card = document.createElement('div');
+            card.className = `p-6 rounded-xl shadow-md ${getStatusColorClass(data.value)} transition-all duration-300 transform hover:scale-105`;
+            card.innerHTML = `
+                <h3 class="font-bold text-lg text-gray-800">${data.name}</h3>
+                <p class="text-sm text-gray-600 mt-1">Current PM2.5: <span class="text-xl font-bold text-gray-900">${data.value} ${data.unit}</span></p>
+                <div class="mt-4">
+                    <span class="inline-block rounded-full px-3 py-1 text-xs font-semibold text-white bg-gradient-to-r from-gray-700 to-gray-900">
+                        ${getStatusText(data.value)}
+                    </span>
+                </div>
+            `;
+            return card;
+        }
+
+        // Function to update the dashboard with the latest data.
+        function updateDashboard(data) {
+            // Clear the existing cards.
+            dataGrid.innerHTML = '';
+            // Render new cards for each data point.
+            data.forEach(item => {
+                dataGrid.appendChild(renderCard(item));
+            });
+        }
+        
+        // This function simulates fetching real-time data from an API.
+        async function fetchAndRenderData() {
+            // Show loading indicator
+            loadingIndicator.classList.remove('hidden');
+            dataGrid.classList.add('hidden');
+
+            // Simulate a network request delay
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            // Generate mock data to simulate an API response
+            const responseData = [
+                { id: 'site1', name: 'Puregold C. Raymundo', value: Math.round(Math.random() * (100 - 20) + 20), unit: 'µg/m³', status: '' },
+                { id: 'site2', name: 'LAN Gas Station', value: Math.round(Math.random() * (100 - 20) + 20), unit: 'µg/m³', status: '' },
+                { id: 'site3', name: 'RAVE Park Entrance', value: Math.round(Math.random() * (100 - 20) + 20), unit: 'µg/m³', status: '' }
+            ];
+
+            // Update the dashboard with the fetched data
+            updateDashboard(responseData);
+
+            // Hide loading indicator and show data grid
+            loadingIndicator.classList.add('hidden');
+            dataGrid.classList.remove('hidden');
+        }
+
+        // Run the initial dashboard update when the page loads.
+        window.onload = function() {
+            fetchAndRenderData();
+            // Update the data every 5 seconds to simulate real-time readings.
+            setInterval(fetchAndRenderData, 5000);
+        };
+    </script>
+</body>
+</html>
